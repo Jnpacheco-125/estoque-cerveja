@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TipoCerveja {
     LAGER("Lager"),
+    PILSEN("Pilsen"),
     MALZBIER("Malzbier"),
     WITBIER("Witbier"),
     WEISS("Weiss"),
