@@ -2,6 +2,7 @@ package br.com.dio.estoque_cerveja.controller;
 
 
 
+import br.com.dio.estoque_cerveja.dto.CervejaEstoqueIncrementadoDTO;
 import br.com.dio.estoque_cerveja.dto.CervejaRequestDTO;
 import br.com.dio.estoque_cerveja.dto.CervejaResponseDTO;
 import br.com.dio.estoque_cerveja.service.CervejaService;
@@ -68,5 +69,21 @@ public class CervejaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletarPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Incrementar estoque de cerveja")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Estoque incrementado com sucesso",
+                    content = @Content(schema = @Schema(implementation = CervejaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Cerveja não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Estoque máximo excedido")
+    })
+    @PatchMapping("/{id}/incrementar")
+    public ResponseEntity<CervejaResponseDTO> incrementarEstoque(
+            @PathVariable Long id,
+            @RequestBody @Valid CervejaEstoqueIncrementadoDTO cervejaEstoqueIncrementadoDTO) {
+
+        CervejaResponseDTO cervejaAtualizada = service.incrementarEstoque(id, cervejaEstoqueIncrementadoDTO.quantidade());
+        return ResponseEntity.ok(cervejaAtualizada);
     }
 }
